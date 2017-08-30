@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Books</string>
     <string name="search">search</string>
+    <string name="no_search_data">Please enter valid search terms.</string>
+    <string name="hint_title">Insert Title</string>
+    <string name="hint_authors">Insert Author(s)</string>
+    <string name="hint_publisher">Insert Publisher</string>
+    <string name="hint_ISBN">Insert ISBN</string>
+    <string name="advanced_search">Advanced Search</string>
 </resources>

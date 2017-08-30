@@ -1,5 +1,6 @@
 package com.s_t_e.books;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -21,6 +22,7 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
 
     private ProgressBar loadingProgress;
     private RecyclerView rvBooks;
+    URL bookUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +33,16 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
         LinearLayoutManager booksLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         rvBooks.setLayoutManager(booksLayoutManager);
+
+        Intent intent = getIntent();
+        String query = intent.getStringExtra("query");
+
         try {
-            URL bookUrl = ApiUtil.buildUrl("cooking");
+            if (query == null || query.isEmpty()) {
+                bookUrl = ApiUtil.buildUrl("cooking");
+            } else {
+                bookUrl = new URL(query);
+            }
             new BooksQueryTask().execute(bookUrl);
         } catch (Exception e) {
             Log.d("error", e.getMessage());
@@ -46,6 +56,18 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_advanced_search :
+                Intent intent = new Intent (this, SearchActivity.class);
+                startActivity(intent);
+                return true;
+            default :
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
