@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -108,11 +109,22 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
 
         @Override
         protected void onPostExecute(String result) {
+
+            TextView tvError = (TextView) findViewById(R.id.tv_Error);
             loadingProgress.setVisibility(View.INVISIBLE);
-            rvBooks.setVisibility(View.VISIBLE);
-            ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
-            BooksAdapter adapter = new BooksAdapter(books);
-            rvBooks.setAdapter(adapter);
+            if (result == null) {
+                rvBooks.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+            } else {
+                rvBooks.setVisibility(View.VISIBLE);
+                tvError.setVisibility(View.INVISIBLE);
+                ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
+                String resultString = "";
+
+                BooksAdapter adapter = new BooksAdapter(books);
+                rvBooks.setAdapter(adapter);
+            }
+
         }
     }
 }
